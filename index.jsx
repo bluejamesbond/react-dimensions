@@ -95,9 +95,15 @@ module.exports = function Dimensions ({
       // Using arrow functions and ES7 Class properties to autobind
       // http://babeljs.io/blog/2015/06/07/react-on-es6-plus/#arrow-functions
       updateDimensions = retries => {
+        let containerWidth = 0;
+        let containerHeight = 0;
+
         const container = this.refs.container
-        const containerWidth = getWidth(container)
-        const containerHeight = getHeight(container)
+
+        if (container != null) {
+            containerWidth = getWidth(container);
+            containerHeight = getHeight(container);
+        }
 
         if (containerWidth !== this.state.containerWidth ||
             containerHeight !== this.state.containerHeight) {

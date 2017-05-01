@@ -122,9 +122,15 @@ module.exports = function Dimensions() {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = DimensionsHOC.__proto__ || Object.getPrototypeOf(DimensionsHOC)).call.apply(_ref2, [this].concat(args))), _this), _this.state = {}, _this.updateDimensions = function (retries) {
+          var containerWidth = 0;
+          var containerHeight = 0;
+
           var container = _this.refs.container;
-          var containerWidth = getWidth(container);
-          var containerHeight = getHeight(container);
+
+          if (container != null) {
+            containerWidth = getWidth(container);
+            containerHeight = getHeight(container);
+          }
 
           if (containerWidth !== _this.state.containerWidth || containerHeight !== _this.state.containerHeight) {
             _this.setState({ containerWidth: containerWidth, containerHeight: containerHeight });
