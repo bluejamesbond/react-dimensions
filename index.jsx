@@ -99,7 +99,11 @@ module.exports = function Dimensions ({
 
         if (containerWidth !== this.state.containerWidth ||
             containerHeight !== this.state.containerHeight) {
-          this.setState({containerWidth, containerHeight})
+          this.setState({containerWidth, containerHeight});
+        }
+        
+        if (containerWidth == 0 || containerHeight == 0) {
+          setTimeout(() => this.updateDimensions(), 50);
         }
       }
 
@@ -157,7 +161,7 @@ module.exports = function Dimensions ({
         }
         return (
           <div className={className} style={containerStyle} ref='container'>
-            {!(containerWidth || containerHeight) : null ?
+            {!(containerWidth || containerHeight) ? null : 
               <ComposedComponent
                 {...this.state}
                 {...this.props}
