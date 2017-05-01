@@ -82,7 +82,9 @@ module.exports = function Dimensions ({
     getWidth = defaultGetWidth,
     containerStyle = defaultContainerStyle,
     className = null,
-    elementResize = false
+    elementResize = false,
+    retryCount = 4,
+    retryTimeout = 250
   } = {}) {
   return (ComposedComponent) => {
     return class DimensionsHOC extends React.Component {
@@ -92,7 +94,7 @@ module.exports = function Dimensions ({
 
       // Using arrow functions and ES7 Class properties to autobind
       // http://babeljs.io/blog/2015/06/07/react-on-es6-plus/#arrow-functions
-      updateDimensions = () => {
+      updateDimensions = retries => {
         const container = this.refs.container
         const containerWidth = getWidth(container)
         const containerHeight = getHeight(container)
@@ -102,8 +104,14 @@ module.exports = function Dimensions ({
           this.setState({containerWidth, containerHeight});
         }
         
-        if (containerWidth == 0 || containerHeight == 0) {
-          setTimeout(() => this.updateDimensions(), 50);
+        if (containerWidth === 0 || containerHeight === 0) {
+          if (retries == null) {
+            retries = retryCount;
+          }
+
+          if (retries > 0) {
+            setTimeout(() => this.updateDimensions(retries - 1), retryTimeout);
+          }
         }
       }
 
